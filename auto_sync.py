@@ -12,6 +12,7 @@ WORK_DIR = os.path.dirname(APP_DIR)
 WATCH_DIR = os.path.join(WORK_DIR, "규정 지침 앱")
 PYTHON_EXE = sys.executable
 GIT_EXE = r"C:\Program Files\Git\cmd\git.exe"
+NPX_EXE = r"C:\Program Files\nodejs\npx.cmd"
 TRACKED_OUTPUTS = [
     "data.js",
     "custom_edits.json",
@@ -84,7 +85,10 @@ class WatcherHandler(FileSystemEventHandler):
             
             # 6. git push
             run_step([GIT_EXE, "push", "origin", "main"])
-            log("PDF/data auto update pushed to origin main")
+
+            # 7. Cloudflare Workers 운영 배포
+            run_step([NPX_EXE, "wrangler", "deploy"])
+            log("PDF/data auto update pushed and deployed to Cloudflare")
             
         except Exception as e:
             # 백그라운드이므로 에러 로그를 남기거나 무시
