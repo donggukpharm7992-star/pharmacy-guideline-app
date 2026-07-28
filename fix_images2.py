@@ -1,6 +1,7 @@
 import os
 import json
 import re
+import fitz
 
 try:
     from pyzbar.pyzbar import decode
@@ -37,6 +38,21 @@ for f in pdf_files:
 
 images_dir = os.path.join(APP_DIR, "images")
 images = os.listdir(images_dir)
+
+
+def is_logo_image(path):
+    if not os.path.isfile(path):
+        return False
+    try:
+        pixmap = fitz.Pixmap(path)
+        width, height = pixmap.width, pixmap.height
+        return (
+            70 <= width <= 220
+            and 15 <= height <= 60
+            and width / height >= 3.5
+        )
+    except Exception:
+        return False
 
 for doc in docs:
     prefix = extract_prefix(doc['title'])
@@ -99,14 +115,12 @@ for doc in docs:
     # Remove empty headers
     content = re.sub(r'^#+\s+$', '', content, flags=re.MULTILINE)
     
-    # 3. Remove Logo Images
-    # We found that the logo image comes in exactly [3906, 14015, 16445] bytes.
-    # We will remove any markdown image link that points to an image of this size.
+    # 3. Remove repeated hospital logo images by their compact banner shape.
     def replace_logo(m):
         alt = m.group(1)
         img_path = m.group(2)
         full_path = os.path.join(APP_DIR, img_path)
-        if os.path.exists(full_path) and os.path.getsize(full_path) in [3906, 14015, 16445]:
+        if is_logo_image(full_path):
             return '' # remove it
         # encode spaces in the image path for marked.js
         encoded_path = img_path.replace(' ', '%20')
@@ -127,9 +141,9 @@ for doc in docs:
     doc_images = [img for img in images if img.startswith(prefix + '.') or img.startswith(prefix + '_')]
     
     for img in doc_images:
-        # Don't append if it's the logo size
+        # Don't append repeated hospital logos.
         full_path = os.path.join(images_dir, img)
-        if os.path.exists(full_path) and os.path.getsize(full_path) in [3906, 14015, 16445]:
+        if is_logo_image(full_path):
             continue
             
         img_link = f"images/{img}"
