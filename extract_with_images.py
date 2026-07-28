@@ -47,8 +47,8 @@ def process_pdfs_with_images(source_dir, output_js_file):
     print(f"Successfully processed {len(documents)} documents and saved to {output_js_file}")
 
 if __name__ == "__main__":
-    # Source is absolute
-    source_folder = r"C:\Users\duih\Desktop\약제팀 규정 지침\규정 지침 앱"
+    app_dir = os.path.dirname(os.path.abspath(__file__))
+    source_folder = os.path.join(os.path.dirname(app_dir), "규정 지침 앱")
     # Output is data.js in current directory
     output_js = "data.js"
     

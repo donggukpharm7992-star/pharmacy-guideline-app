@@ -1,4 +1,5 @@
 import os
+import sys
 import time
 import subprocess
 from threading import Timer
@@ -6,9 +7,10 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 # 설정
-WATCH_DIR = r"C:\Users\duih\Desktop\약제팀 규정 지침\규정 지침 앱"
-WORK_DIR = r"c:\Users\duih\Desktop\코딩"
-APP_DIR = r"c:\Users\duih\Desktop\코딩\병원_약제팀_학습앱"
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+WORK_DIR = os.path.dirname(APP_DIR)
+WATCH_DIR = os.path.join(WORK_DIR, "규정 지침 앱")
+PYTHON_EXE = sys.executable
 GIT_EXE = r"C:\Program Files\Git\cmd\git.exe"
 TRACKED_OUTPUTS = [
     "data.js",
@@ -55,13 +57,13 @@ class WatcherHandler(FileSystemEventHandler):
             log("PDF/data auto update started")
 
             # 1. extract_with_images.py 실행
-            run_step(["python", os.path.join(APP_DIR, "extract_with_images.py")])
+            run_step([PYTHON_EXE, os.path.join(APP_DIR, "extract_with_images.py")])
             
             # 2. fix_images2.py 실행
-            run_step(["python", os.path.join(APP_DIR, "fix_images2.py")])
+            run_step([PYTHON_EXE, os.path.join(APP_DIR, "fix_images2.py")])
 
             # 3. dist 생성
-            run_step(["python", os.path.join(APP_DIR, "build_dist.py")])
+            run_step([PYTHON_EXE, os.path.join(APP_DIR, "build_dist.py")])
             
             # 4. 필요한 산출물만 Git에 추가
             run_step([GIT_EXE, "add", *TRACKED_OUTPUTS])

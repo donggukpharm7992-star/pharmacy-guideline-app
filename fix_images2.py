@@ -9,7 +9,8 @@ try:
 except ImportError:
     HAS_PYZBAR = False
 
-data_js_path = r"c:\Users\duih\Desktop\코딩\병원_약제팀_학습앱\data.js"
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+data_js_path = os.path.join(APP_DIR, "data.js")
 with open(data_js_path, 'r', encoding='utf-8') as f:
     js_content = f.read()
 
@@ -25,7 +26,7 @@ def extract_prefix(title):
         return m.group(1).strip('-').strip('_')
     return None
 
-pdf_dir = r"C:\Users\duih\Desktop\약제팀 규정 지침\규정 지침 앱"
+pdf_dir = os.path.join(os.path.dirname(APP_DIR), "규정 지침 앱")
 pdf_files = [f for f in os.listdir(pdf_dir) if f.endswith('.pdf')]
 prefix_to_correct_title = {}
 for f in pdf_files:
@@ -34,7 +35,7 @@ for f in pdf_files:
     if prefix:
         prefix_to_correct_title[prefix] = title
 
-images_dir = r"c:\Users\duih\Desktop\코딩\병원_약제팀_학습앱\images"
+images_dir = os.path.join(APP_DIR, "images")
 images = os.listdir(images_dir)
 
 for doc in docs:
@@ -104,7 +105,7 @@ for doc in docs:
     def replace_logo(m):
         alt = m.group(1)
         img_path = m.group(2)
-        full_path = os.path.join(r"c:\Users\duih\Desktop\코딩\병원_약제팀_학습앱", img_path)
+        full_path = os.path.join(APP_DIR, img_path)
         if os.path.exists(full_path) and os.path.getsize(full_path) in [3906, 14015, 16445]:
             return '' # remove it
         # encode spaces in the image path for marked.js
@@ -146,7 +147,7 @@ for doc in docs:
                 pass
 
 # Apply user manual edits
-edits_path = os.path.join(r"c:\Users\duih\Desktop\코딩\병원_약제팀_학습앱", "custom_edits.json")
+edits_path = os.path.join(APP_DIR, "custom_edits.json")
 if os.path.exists(edits_path):
     with open(edits_path, 'r', encoding='utf-8') as f:
         try:
