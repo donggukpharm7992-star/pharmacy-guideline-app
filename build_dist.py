@@ -10,6 +10,7 @@ FILES = [
     "app.js",
     "data.js",
     "style.css",
+    "manifest.webmanifest",
 ]
 
 
