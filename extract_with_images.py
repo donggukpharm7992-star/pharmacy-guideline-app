@@ -48,7 +48,7 @@ def process_pdfs_with_images(source_dir, output_js_file):
 
 if __name__ == "__main__":
     # Source is absolute
-    source_folder = r"c:\Users\duih\Desktop\코딩\규정 지침 앱"
+    source_folder = r"C:\Users\duih\Desktop\약제팀 규정 지침\규정 지침 앱"
     # Output is data.js in current directory
     output_js = "data.js"
     

@@ -6,7 +6,7 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 # 설정
-WATCH_DIR = r"c:\Users\duih\Desktop\코딩\규정 지침 앱"
+WATCH_DIR = r"C:\Users\duih\Desktop\약제팀 규정 지침\규정 지침 앱"
 WORK_DIR = r"c:\Users\duih\Desktop\코딩"
 APP_DIR = r"c:\Users\duih\Desktop\코딩\병원_약제팀_학습앱"
 GIT_EXE = r"C:\Program Files\Git\cmd\git.exe"

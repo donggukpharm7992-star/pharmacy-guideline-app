@@ -25,7 +25,7 @@ def extract_prefix(title):
         return m.group(1).strip('-').strip('_')
     return None
 
-pdf_dir = r"c:\Users\duih\Desktop\코딩\규정 지침 앱"
+pdf_dir = r"C:\Users\duih\Desktop\약제팀 규정 지침\규정 지침 앱"
 pdf_files = [f for f in os.listdir(pdf_dir) if f.endswith('.pdf')]
 prefix_to_correct_title = {}
 for f in pdf_files:
