@@ -758,9 +758,22 @@ mark.active-highlight {
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+    html,
+    body {
+        min-height: 100%;
+        overflow-x: hidden;
+    }
+
+    body {
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+    }
+
     .app-container {
         display: block;
-        height: 100dvh;
+        height: auto;
+        min-height: 100svh;
+        min-height: 100dvh;
     }
 
     .sidebar {
@@ -899,8 +912,10 @@ mark.active-highlight {
     
     .main-content {
         display: block;
+        min-height: 100svh;
         min-height: 100dvh;
-        padding: 72px 16px 24px;
+        overflow: visible;
+        padding: 72px 16px calc(32px + env(safe-area-inset-bottom));
     }
     
     .app-container.mobile-view-doc .sidebar {
