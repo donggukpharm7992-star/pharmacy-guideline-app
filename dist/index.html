@@ -52,9 +52,42 @@
 
         <!-- Main Content Area -->
         <main class="main-content">
-            <div id="contentPlaceholder" class="placeholder-content">
+            <section id="learningHome" class="learning-home" aria-label="자가 학습">
+                <div class="learning-intro">
+                    <span class="learning-eyebrow"><i class="fa-solid fa-graduation-cap"></i> 오늘의 자가 학습</span>
+                    <h1>질문을 보고 답을 떠올려 보세요</h1>
+                    <p>카드를 누르면 답을 확인할 수 있습니다. 다음 문제를 눌러 무작위 문제를 이어서 학습하세요.</p>
+                </div>
+
+                <div class="learning-tabs" role="tablist" aria-label="학습 분류">
+                    <button class="learning-tab active" type="button" data-learning-tab="common" role="tab" aria-selected="true">공통 사항</button>
+                    <button class="learning-tab" type="button" data-learning-tab="pharmacy" role="tab" aria-selected="false">약제 사항</button>
+                </div>
+
+                <div class="flashcard-wrap">
+                    <button id="flashcard" class="flashcard" type="button" aria-live="polite" aria-label="질문 카드. 눌러 답 확인">
+                        <span class="flashcard-face flashcard-front">
+                            <span class="flashcard-label">QUESTION</span>
+                            <strong id="flashcardQuestion"></strong>
+                            <span class="flashcard-hint">카드를 눌러 답을 확인하세요</span>
+                        </span>
+                        <span class="flashcard-face flashcard-back">
+                            <span class="flashcard-label">ANSWER</span>
+                            <strong id="flashcardAnswer"></strong>
+                            <span class="flashcard-hint">다시 누르면 질문으로 돌아갑니다</span>
+                        </span>
+                    </button>
+                </div>
+
+                <div class="learning-controls">
+                    <span id="learningCount" class="learning-count"></span>
+                    <button id="nextQuestionBtn" class="next-question-btn" type="button"><i class="fa-solid fa-shuffle"></i> 다음 문제</button>
+                </div>
+            </section>
+
+            <div id="contentPlaceholder" class="placeholder-content hidden">
                 <i class="fa-regular fa-file-lines fa-3x"></i>
-                <p>좌측에서 문서를 선택해주세요.</p>
+                <p>좌측에서 문서를 선택해 주세요.</p>
             </div>
             
             <div id="markdownViewer" class="markdown-viewer hidden">
@@ -103,6 +136,19 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <div id="searchModal" class="search-modal hidden" role="dialog" aria-modal="true" aria-labelledby="searchModalTitle">
+        <div class="search-modal-panel">
+            <div class="search-modal-header">
+                <div>
+                    <span class="search-modal-eyebrow">관련 내용 확인</span>
+                    <h2 id="searchModalTitle">검색 결과</h2>
+                </div>
+                <button id="closeSearchModalBtn" class="search-modal-close" type="button" aria-label="검색 결과 닫기"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="searchModalResults" class="search-modal-results"></div>
+        </div>
     </div>
 
     <!-- Toast UI Editor JS -->
