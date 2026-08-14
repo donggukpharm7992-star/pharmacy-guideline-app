@@ -36,6 +36,9 @@
             <div class="search-container">
                 <i class="fa-solid fa-search search-icon"></i>
                 <input type="text" id="searchInput" placeholder="검색어를 입력하세요...">
+                <button id="mobileLibraryBtn" class="mobile-library-btn" type="button" aria-label="규정 및 지침 목록 열기">
+                    <i class="fa-solid fa-list"></i><span>목록</span>
+                </button>
             </div>
 
             <div class="tabs">
@@ -148,6 +151,17 @@
                 <button id="closeSearchModalBtn" class="search-modal-close" type="button" aria-label="검색 결과 닫기"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="searchModalResults" class="search-modal-results"></div>
+        </div>
+    </div>
+
+    <div id="mobileLibraryPanel" class="mobile-library-panel hidden" role="dialog" aria-modal="true" aria-labelledby="mobileLibraryTitle">
+        <div class="mobile-library-sheet">
+            <div class="mobile-library-header">
+                <h2 id="mobileLibraryTitle">규정·지침 목록</h2>
+                <button id="closeMobileLibraryBtn" class="search-modal-close" type="button" aria-label="문서 목록 닫기"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="mobileLibraryTabs" class="mobile-library-tabs" role="tablist" aria-label="문서 분류"></div>
+            <div id="mobileLibraryDocList" class="mobile-library-doc-list"></div>
         </div>
     </div>
 

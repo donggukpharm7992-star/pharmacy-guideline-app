@@ -27,6 +27,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchModalResults = document.getElementById('searchModalResults');
     const searchModalTitle = document.getElementById('searchModalTitle');
     const closeSearchModalBtn = document.getElementById('closeSearchModalBtn');
+    const mobileLibraryBtn = document.getElementById('mobileLibraryBtn');
+    const mobileLibraryPanel = document.getElementById('mobileLibraryPanel');
+    const closeMobileLibraryBtn = document.getElementById('closeMobileLibraryBtn');
+    const mobileLibraryTabs = document.getElementById('mobileLibraryTabs');
+    const mobileLibraryDocList = document.getElementById('mobileLibraryDocList');
 
     // State
     let currentFilter = '전체'; // 전체, 규정, 지침
@@ -37,6 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let editor = null;
     let currentLearningTab = 'common';
     let currentQuestionIndex = 0;
+    let mobileLibraryFilter = '전체';
     const urlParams = new URLSearchParams(window.location.search);
     const hostName = window.location.hostname || '';
     const isLocalEditorHost = ['localhost', '127.0.0.1', '::1', ''].includes(hostName);
@@ -288,6 +294,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        if (mobileLibraryBtn) {
+            mobileLibraryBtn.addEventListener('click', openMobileLibrary);
+        }
+
+        if (closeMobileLibraryBtn) {
+            closeMobileLibraryBtn.addEventListener('click', closeMobileLibrary);
+        }
+
+        if (mobileLibraryPanel) {
+            mobileLibraryPanel.addEventListener('click', (e) => {
+                if (e.target === mobileLibraryPanel) closeMobileLibrary();
+            });
+        }
+
         // Trace navigation
         prevMatchBtn.addEventListener('click', () => {
             if (highlightElements.length > 0) {
@@ -417,6 +437,64 @@ document.addEventListener('DOMContentLoaded', () => {
         if (searchInput) searchInput.value = '';
         searchQuery = '';
         showLearningHome();
+    }
+
+    function openMobileLibrary() {
+        if (!mobileLibraryPanel) return;
+        renderMobileLibrary();
+        mobileLibraryPanel.classList.remove('hidden');
+        closeMobileLibraryBtn?.focus();
+    }
+
+    function closeMobileLibrary() {
+        if (mobileLibraryPanel) mobileLibraryPanel.classList.add('hidden');
+    }
+
+    function renderMobileLibrary() {
+        if (!mobileLibraryTabs || !mobileLibraryDocList) return;
+        const filters = ['전체', '규정', '지침', '업무정리'];
+        mobileLibraryTabs.innerHTML = '';
+        mobileLibraryDocList.innerHTML = '';
+
+        filters.forEach(filter => {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = `mobile-library-tab ${filter === mobileLibraryFilter ? 'active' : ''}`;
+            button.textContent = filter === '업무정리' ? '업무 정리' : filter;
+            button.setAttribute('aria-pressed', String(filter === mobileLibraryFilter));
+            button.addEventListener('click', () => {
+                mobileLibraryFilter = filter;
+                renderMobileLibrary();
+            });
+            mobileLibraryTabs.appendChild(button);
+        });
+
+        const docs = documentsData.filter(doc => mobileLibraryFilter === '전체' || getDocCategory(doc) === mobileLibraryFilter);
+        if (docs.length === 0) {
+            const empty = document.createElement('p');
+            empty.className = 'mobile-library-empty';
+            empty.textContent = '표시할 문서가 없습니다.';
+            mobileLibraryDocList.appendChild(empty);
+            return;
+        }
+
+        docs.forEach(doc => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'mobile-library-doc';
+            const category = document.createElement('span');
+            category.className = `badge badge-${getDocCategory(doc)}`;
+            category.textContent = getDocCategory(doc);
+            const title = document.createElement('strong');
+            title.textContent = doc.title;
+            item.appendChild(category);
+            item.appendChild(title);
+            item.addEventListener('click', () => {
+                closeMobileLibrary();
+                viewDocument(doc);
+            });
+            mobileLibraryDocList.appendChild(item);
+        });
     }
 
     async function deployChanges() {
@@ -581,6 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // View Document Content
     function viewDocument(doc) {
         activeDocId = doc.id;
+        closeMobileLibrary();
         
         // Hide placeholder, show viewer
         contentPlaceholder.classList.add('hidden');
