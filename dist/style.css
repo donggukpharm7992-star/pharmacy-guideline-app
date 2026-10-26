@@ -949,25 +949,48 @@ mark.active-highlight {
     }
 
     .learning-home {
-        padding: 18px 0 8px;
+        padding: 18px 0 calc(120px + env(safe-area-inset-bottom, 0px));
     }
 
     .learning-intro {
         margin-bottom: 20px;
     }
 
-    .flashcard-wrap,
+    .flashcard-wrap {
+        min-height: 0;
+    }
+
     .flashcard {
-        min-height: 390px;
+        display: grid;
+        min-height: 260px;
+        min-height: clamp(260px, 45svh, 390px);
     }
 
     .flashcard-face {
+        position: relative;
+        inset: auto;
+        grid-area: 1 / 1;
+        min-width: 0;
         padding: 28px;
     }
 
+    .flashcard-hint {
+        padding-top: 24px;
+    }
+
     .learning-controls {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 15;
         align-items: stretch;
         flex-direction: column;
+        gap: 8px;
+        margin-top: 0;
+        padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+        border-top: 1px solid var(--border-color);
+        background: var(--bg-color);
     }
 
     .learning-count {
